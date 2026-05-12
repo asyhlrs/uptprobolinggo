@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Penjadwalan Padam Pekerjaan — UPT Probolinggo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0d2240;
+    --navy-mid: #163460;
+    --navy-light: #1e4a8a;
+    --accent: #e8a020;
+    --accent-light: #fdf0d5;
+    --accent-mid: #f5c360;
+    --danger: #c0392b;
+    --danger-bg: #fdf0ef;
+    --danger-border: #f5b7b1;
+    --success: #1a7a4a;
+    --success-bg: #e8f5ee;
+    --success-border: #a3d9bb;
+    --warn: #a05c00;
+    --warn-bg: #fff8ec;
+    --warn-border: #f5c360;
+    --info: #1558a8;
+    --info-bg: #eaf0fc;
+    --info-border: #a3bcf0;
+    --pink: #8e2461;
+    --pink-bg: #fceef6;
+    --pink-border: #e8a3cc;
+    --surface: #f5f6f8;
+    --surface-alt: #eef0f4;
+    --border: #dde1e9;
+    --border-dark: #c5cad6;
+    --text: #0d1829;
+    --text-2: #4a5568;
+    --text-3: #8492a6;
+    --white: #ffffff;
+    --radius: 10px;
+    --radius-sm: 6px;
+    --radius-lg: 14px;
+    --shadow: 0 1px 3px rgba(13,34,64,0.08), 0 4px 16px rgba(13,34,64,0.06);
+    --shadow-lg: 0 4px 24px rgba(13,34,64,0.12), 0 1px 4px rgba(13,34,64,0.08);
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--surface);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    width: 220px;
+    background: var(--navy);
+    display: flex;
+    flex-direction: column;
+    z-index: 50;
+    padding: 0 0 1.5rem;
+  }
+
+  .sidebar-logo {
+    padding: 1.25rem 1.25rem 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 0.75rem;
+  }
+
+  .sidebar-logo-box {
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  .sidebar-icon-wrap {
+    width: 36px; height: 36px;
+    background: var(--accent);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .sidebar-icon-wrap i { font-size: 18px; color: var(--navy); }
+
+  .sidebar-brand { line-height: 1.2; }
+  .sidebar-brand-main { font-size: 13px; font-weight: 600; color: #fff; letter-spacing: 0.01em; }
+  .sidebar-brand-sub { font-size: 10.5px; color: rgba(255,255,255,0.45); margin-top: 1px; }
+
+  .sidebar-section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    padding: 0 1.25rem 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .sidebar-nav { flex: 1; padding: 0 0.75rem; }
+
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 12px;
+    border-radius: var(--radius-sm);
+    color: rgba(255,255,255,0.55);
+    font-size: 13px;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-bottom: 2px;
+    text-decoration: none;
+  }
+
+  .nav-item i { font-size: 17px; flex-shrink: 0; }
+  .nav-item:hover { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.85); }
+  .nav-item.active { background: rgba(232,160,32,0.15); color: var(--accent-mid); font-weight: 500; }
+  .nav-item.active i { color: var(--accent); }
+
+  .nav-badge {
+    margin-left: auto;
+    background: var(--accent);
+    color: var(--navy);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 1px 7px;
+    border-radius: 20px;
+  }
+
+  .sidebar-bottom {
+    padding: 0.75rem 0.75rem 0;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    margin-top: 0.5rem;
+  }
+
+  .user-card {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+  }
+
+  .user-avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--navy-light);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 600; color: #fff;
+    flex-shrink: 0;
+  }
+
+  .user-name { font-size: 12.5px; font-weight: 500; color: rgba(255,255,255,0.8); }
+  .user-role { font-size: 11px; color: rgba(255,255,255,0.35); }
+
+  /* ── MAIN ── */
+  .main {
+    margin-left: 220px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 40;
+  }
+
+  .topbar-left { display: flex; flex-direction: column; }
+  .topbar-title { font-size: 16px; font-weight: 600; color: var(--text); line-height: 1.2; }
+  .topbar-sub { font-size: 12px; color: var(--text-3); }
+
+  .topbar-right { display: flex; align-items: center; gap: 12px; }
+
+  .live-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 500;
+    padding: 4px 12px; border-radius: 20px;
+    background: var(--success-bg);
+    color: var(--success);
+    border: 1px solid var(--success-border);
+  }
+
+  .live-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--success);
+    animation: blink 1.5s ease-in-out infinite;
+  }
+
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  .topbar-clock {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--text-2);
+    background: var(--surface);
+    padding: 5px 12px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+  }
+
+  .btn-notif {
+    width: 36px; height: 36px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--white);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-2);
+    position: relative;
+    transition: all 0.15s;
+  }
+  .btn-notif:hover { background: var(--surface); }
+  .btn-notif .dot { width: 8px; height: 8px; background: var(--danger); border-radius: 50%; position: absolute; top: 6px; right: 6px; border: 2px solid #fff; }
+
+  /* ── CONTENT ── */
+  .content { padding: 1.75rem 2rem 3rem; flex: 1; }
+
+  /* ── STATS ── */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .stat-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.25rem;
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+
+  .stat-card:hover { box-shadow: var(--shadow); transform: translateY(-1px); }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  }
+
+  .stat-card.c-blue::before { background: var(--navy-light); }
+  .stat-card.c-amber::before { background: var(--accent); }
+  .stat-card.c-green::before { background: var(--success); }
+  .stat-card.c-red::before { background: var(--danger); }
+  .stat-card.c-gray::before { background: var(--border-dark); }
+
+  .stat-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  .stat-card.c-blue .stat-icon { background: var(--info-bg); color: var(--info); }
+  .stat-card.c-amber .stat-icon { background: var(--warn-bg); color: var(--warn); }
+  .stat-card.c-green .stat-icon { background: var(--success-bg); color: var(--success); }
+  .stat-card.c-red .stat-icon { background: var(--danger-bg); color: var(--danger); }
+  .stat-card.c-gray .stat-icon { background: var(--surface-alt); color: var(--text-3); }
+
+  .stat-label { font-size: 11.5px; color: var(--text-3); margin-bottom: 2px; }
+  .stat-value { font-size: 26px; font-weight: 600; color: var(--text); line-height: 1; }
+  .stat-card.c-blue .stat-value { color: var(--navy-light); }
+  .stat-card.c-amber .stat-value { color: var(--warn); }
+  .stat-card.c-green .stat-value { color: var(--success); }
+  .stat-card.c-red .stat-value { color: var(--danger); }
+
+  /* ── TOOLBAR ── */
+  .toolbar {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    animation: fadeUp 0.4s 0.1s ease both;
+  }
+
+  .tab-group {
+    display: flex; gap: 2px;
+    background: var(--surface);
+    padding: 3px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+  }
+
+  .tab-btn {
+    padding: 5px 14px;
+    font-size: 12.5px;
+    font-weight: 400;
+    border: none; background: transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    color: var(--text-3);
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .tab-btn.active {
+    background: var(--white);
+    color: var(--text);
+    font-weight: 500;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+
+  .divider-v { width: 1px; height: 28px; background: var(--border); flex-shrink: 0; }
+
+  .search-wrap {
+    position: relative; flex: 1; min-width: 200px;
+  }
+
+  .search-wrap i {
+    position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+    font-size: 15px; color: var(--text-3); pointer-events: none;
+  }
+
+  .search-wrap input {
+    width: 100%; height: 36px;
+    padding: 0 12px 0 34px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--text);
+    background: var(--surface);
+    outline: none;
+    transition: border-color 0.15s, background 0.15s;
+  }
+
+  .search-wrap input:focus { border-color: var(--navy-light); background: var(--white); }
+  .search-wrap input::placeholder { color: var(--text-3); }
+
+  select.filter-select {
+    height: 36px;
+    padding: 0 30px 0 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--text);
+    background: var(--surface);
+    outline: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238492a6' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+
+  select.filter-select:focus { border-color: var(--navy-light); outline: none; }
+
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 7px;
+    height: 36px; padding: 0 16px;
+    background: var(--navy);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px; font-weight: 500;
+    border: none; border-radius: var(--radius-sm);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s, transform 0.1s;
+  }
+
+  .btn-primary:hover { background: var(--navy-mid); }
+  .btn-primary:active { transform: scale(0.98); }
+  .btn-primary i { font-size: 15px; }
+
+  .btn-export {
+    display: inline-flex; align-items: center; gap: 6px;
+    height: 36px; padding: 0 14px;
+    background: var(--white);
+    color: var(--text-2);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px; font-weight: 400;
+    border: 1px solid var(--border); border-radius: var(--radius-sm);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s;
+  }
+
+  .btn-export:hover { background: var(--surface); border-color: var(--border-dark); }
+  .btn-export i { font-size: 15px; }
+
+  /* ── TABLE ── */
+  .table-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    animation: fadeUp 0.4s 0.2s ease both;
+  }
+
+  table {
+    width: 100%; border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  thead th {
+    background: var(--surface);
+    padding: 10px 16px;
+    text-align: left;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--text-3);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+    user-select: none;
+    cursor: pointer;
+    transition: color 0.15s;
+  }
+
+  thead th:hover { color: var(--text); }
+  thead th i { vertical-align: -2px; font-size: 13px; margin-left: 3px; }
+  thead th:last-child { cursor: default; }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+  }
+
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: #fafbfd; }
+
+  tbody td { padding: 12px 16px; vertical-align: middle; }
+
+  .td-wo {
+    font-family: 'DM Mono', monospace;
+    font-size: 11.5px;
+    color: var(--text-3);
+    white-space: nowrap;
+  }
+
+  .td-lokasi-name { font-weight: 500; color: var(--text); }
+  .td-lokasi-area { font-size: 12px; color: var(--text-3); margin-top: 1px; }
+
+  .td-time-date { font-weight: 500; color: var(--text); }
+  .td-time-jam { font-size: 12px; color: var(--text-3); font-family: 'DM Mono', monospace; margin-top: 1px; }
+
+  .badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 3px 10px; border-radius: 20px;
+    font-size: 11.5px; font-weight: 500;
+    white-space: nowrap;
+    border: 1px solid transparent;
+  }
+
+  .badge i { font-size: 12px; }
+
+  .badge-plan { background: var(--info-bg); color: var(--info); border-color: var(--info-border); }
+  .badge-prog { background: var(--warn-bg); color: var(--warn); border-color: var(--warn-border); }
+  .badge-done { background: var(--success-bg); color: var(--success); border-color: var(--success-border); }
+  .badge-batal { background: var(--danger-bg); color: var(--danger); border-color: var(--danger-border); }
+
+  .badge-pemeliharaan { background: var(--info-bg); color: var(--info); border-color: var(--info-border); }
+  .badge-gangguan { background: var(--danger-bg); color: var(--danger); border-color: var(--danger-border); }
+  .badge-konstruksi { background: var(--pink-bg); color: var(--pink); border-color: var(--pink-border); }
+
+  .progress-cell { min-width: 90px; }
+  .progress-bar-wrap { height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 3px; background: var(--navy-light); transition: width 0.5s ease; }
+  .progress-pct { font-size: 11px; color: var(--text-3); margin-top: 3px; font-family: 'DM Mono', monospace; }
+
+  .btn-detail {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 5px 11px;
+    font-size: 12px; font-family: 'DM Sans', sans-serif; font-weight: 400;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--white);
+    color: var(--text-2);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .btn-detail:hover { background: var(--navy); color: #fff; border-color: var(--navy); }
+  .btn-detail i { font-size: 13px; }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    text-align: center;
+    padding: 4rem 1rem;
+    display: none;
+  }
+
+  .empty-icon {
+    width: 60px; height: 60px;
+    background: var(--surface);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1rem;
+    font-size: 28px;
+    color: var(--text-3);
+  }
+
+  .empty-state p { color: var(--text-3); font-size: 14px; }
+  .empty-state small { color: var(--text-3); font-size: 12px; }
+
+  /* ── FOOTER TABLE ── */
+  .table-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 16px;
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+    font-size: 12.5px;
+    color: var(--text-3);
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .pagination { display: flex; gap: 4px; }
+
+  .page-btn {
+    min-width: 30px; height: 30px;
+    padding: 0 8px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--white);
+    font-size: 12.5px;
+    color: var(--text-2);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.12s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .page-btn:hover { background: var(--surface-alt); border-color: var(--border-dark); }
+  .page-btn.active { background: var(--navy); color: #fff; border-color: var(--navy); font-weight: 500; }
+  .page-btn:disabled { opacity: 0.4; cursor: default; }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(13,34,64,0.5);
+    z-index: 200;
+    display: none; align-items: center; justify-content: center;
+    padding: 1rem;
+    backdrop-filter: blur(2px);
+  }
+
+  .modal-overlay.open { display: flex; animation: fadeIn 0.2s ease; }
+  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+  .modal {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-lg);
+    width: 100%; max-width: 520px;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideUp 0.25s ease;
+  }
+
+  @keyframes slideUp { from{transform:translateY(16px);opacity:0} to{transform:translateY(0);opacity:1} }
+
+  .modal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 1.5rem 1rem;
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; background: var(--white); z-index: 1;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  }
+
+  .modal-header-left { display: flex; align-items: center; gap: 10px; }
+  .modal-icon { width: 36px; height: 36px; border-radius: 8px; background: var(--info-bg); display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--info); }
+  .modal-title { font-size: 15px; font-weight: 600; }
+  .modal-subtitle { font-size: 12px; color: var(--text-3); font-family: 'DM Mono', monospace; }
+
+  .modal-close {
+    width: 32px; height: 32px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; color: var(--text-3);
+    transition: all 0.12s;
+  }
+
+  .modal-close:hover { background: var(--danger-bg); color: var(--danger); border-color: var(--danger-border); }
+
+  .modal-body { padding: 1.25rem 1.5rem 1.5rem; }
+
+  .detail-section { margin-bottom: 1.25rem; }
+  .detail-section-title {
+    font-size: 10.5px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase;
+    color: var(--text-3); margin-bottom: 10px;
+    padding-bottom: 6px; border-bottom: 1px solid var(--border);
+  }
+
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 20px; }
+  .detail-field-label { font-size: 11.5px; color: var(--text-3); margin-bottom: 3px; }
+  .detail-field-val { font-size: 14px; font-weight: 500; color: var(--text); }
+  .detail-field-val.mono { font-family: 'DM Mono', monospace; font-size: 13px; }
+
+  .area-list { display: flex; flex-direction: column; gap: 6px; margin-top: 4px; }
+  .area-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text); }
+  .area-item i { font-size: 14px; color: var(--text-3); flex-shrink: 0; }
+
+  .progress-detail { margin-top: 6px; }
+  .progress-detail .bar { height: 8px; background: var(--surface-alt); border-radius: 4px; overflow: hidden; }
+  .progress-detail .fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--navy-light), var(--navy)); transition: width 0.6s ease; }
+  .progress-pct-lg { font-size: 13px; font-weight: 500; color: var(--navy-light); margin-top: 4px; }
+
+  /* ── FORM MODAL ── */
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 16px; }
+  .form-full { grid-column: 1 / -1; }
+  .form-group { display: flex; flex-direction: column; gap: 4px; }
+  .form-label { font-size: 12px; font-weight: 500; color: var(--text-2); }
+
+  .form-input, .form-select, .form-textarea {
+    height: 36px;
+    padding: 0 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--text);
+    background: var(--surface);
+    outline: none;
+    transition: border-color 0.15s, background 0.15s;
+  }
+
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: var(--navy-light);
+    background: var(--white);
+    box-shadow: 0 0 0 3px rgba(30,74,138,0.08);
+  }
+
+  .form-input::placeholder, .form-textarea::placeholder { color: var(--text-3); }
+
+  .form-textarea {
+    height: auto; padding: 8px 10px;
+    resize: vertical; line-height: 1.6;
+  }
+
+  .form-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238492a6' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    padding-right: 30px;
+    cursor: pointer;
+  }
+
+  .modal-footer {
+    display: flex; justify-content: flex-end; gap: 8px;
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  }
+
+  .btn-cancel {
+    height: 36px; padding: 0 16px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px; color: var(--text-2);
+    cursor: pointer;
+    transition: all 0.12s;
+  }
+
+  .btn-cancel:hover { background: var(--surface-alt); }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed; bottom: 2rem; right: 2rem;
+    background: var(--navy);
+    color: #fff;
+    padding: 12px 18px;
+    border-radius: var(--radius);
+    font-size: 13px; font-weight: 500;
+    box-shadow: var(--shadow-lg);
+    display: flex; align-items: center; gap: 10px;
+    transform: translateY(80px); opacity: 0;
+    transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    z-index: 999;
+    pointer-events: none;
+  }
+
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast i { font-size: 16px; color: var(--accent-mid); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1024px) {
+    .stats-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  @media (max-width: 768px) {
+    .sidebar { transform: translateX(-220px); }
+    .main { margin-left: 0; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .topbar { padding: 0 1rem; }
+    .content { padding: 1rem 1rem 2rem; }
+    .detail-grid { grid-template-columns: 1fr; }
+    .form-grid { grid-template-columns: 1fr; }
+    .form-full { grid-column: 1; }
+  }
+
+  /* Print style */
+  @media print {
+    .sidebar, .topbar, .toolbar .btn-primary, .toolbar .btn-export, .btn-detail { display: none !important; }
+    .main { margin-left: 0; }
+    .table-card { box-shadow: none; border: 1px solid #ccc; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" role="navigation" aria-label="Menu utama">
+  <div class="sidebar-logo">
+    <div class="sidebar-logo-box">
+      <div class="sidebar-icon-wrap"><i class="ti ti-bolt" aria-hidden="true"></i></div>
+      <div class="sidebar-brand">
+        <div class="sidebar-brand-main">UPT Probolinggo</div>
+        <div class="sidebar-brand-sub">PLN UP3 Pasuruan</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sidebar-nav">
+    <div class="sidebar-section-label">Menu</div>
+    <a class="nav-item" href="#"><i class="ti ti-dashboard" aria-hidden="true"></i>Dashboard</a>
+    <a class="nav-item active" href="#"><i class="ti ti-calendar-event" aria-hidden="true"></i>Jadwal Padam <span class="nav-badge">24</span></a>
+    <a class="nav-item" href="#"><i class="ti ti-tool" aria-hidden="true"></i>Work Order</a>
+    <a class="nav-item" href="#"><i class="ti ti-map-pin" aria-hidden="true"></i>Peta Jaringan</a>
+    <a class="nav-item" href="#"><i class="ti ti-chart-bar" aria-hidden="true"></i>Laporan</a>
+    <div class="sidebar-section-label" style="margin-top:1rem;">Manajemen</div>
+    <a class="nav-item" href="#"><i class="ti ti-users" aria-hidden="true"></i>Tim Pelaksana</a>
+    <a class="nav-item" href="#"><i class="ti ti-building-community" aria-hidden="true"></i>Data Rayon</a>
+    <a class="nav-item" href="#"><i class="ti ti-bell" aria-hidden="true"></i>Notifikasi</a>
+    <a class="nav-item" href="#"><i class="ti ti-settings" aria-hidden="true"></i>Pengaturan</a>
+  </div>
+
+  <div class="sidebar-bottom">
+    <div class="user-card">
+      <div class="user-avatar">AH</div>
+      <div>
+        <div class="user-name">Ahmad Hidayat</div>
+        <div class="user-role">Supervisor Jaringan</div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-title">Penjadwalan Padam Pekerjaan</div>
+      <div class="topbar-sub">Selasa, 12 Mei 2026 &mdash; Periode Bulan Mei 2026</div>
+    </div>
+    <div class="topbar-right">
+      <span class="live-badge"><span class="live-dot"></span>Live</span>
+      <div class="topbar-clock" id="clock">--:--:--</div>
+      <button class="btn-notif" aria-label="Notifikasi"><i class="ti ti-bell" aria-hidden="true"></i><span class="dot"></span></button>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="content" role="main">
+
+    <!-- STATS -->
+    <div class="stats-grid">
+      <div class="stat-card c-blue">
+        <div class="stat-icon"><i class="ti ti-calendar-stats" aria-hidden="true"></i></div>
+        <div class="stat-label">Total Jadwal Bulan Ini</div>
+        <div class="stat-value">24</div>
+      </div>
+      <div class="stat-card c-amber">
+        <div class="stat-icon"><i class="ti ti-loader-2" aria-hidden="true"></i></div>
+        <div class="stat-label">Sedang Berlangsung</div>
+        <div class="stat-value">3</div>
+      </div>
+      <div class="stat-card c-green">
+        <div class="stat-icon"><i class="ti ti-circle-check" aria-hidden="true"></i></div>
+        <div class="stat-label">Selesai</div>
+        <div class="stat-value">14</div>
+      </div>
+      <div class="stat-card c-red">
+        <div class="stat-icon"><i class="ti ti-circle-x" aria-hidden="true"></i></div>
+        <div class="stat-label">Dibatalkan</div>
+        <div class="stat-value">2</div>
+      </div>
+      <div class="stat-card c-gray">
+        <div class="stat-icon"><i class="ti ti-clock" aria-hidden="true"></i></div>
+        <div class="stat-label">Terencana</div>
+        <div class="stat-value">5</div>
+      </div>
+    </div>
+
+    <!-- TOOLBAR -->
+    <div class="toolbar">
+      <div class="tab-group" role="tablist" aria-label="Filter status">
+        <button class="tab-btn active" role="tab" aria-selected="true" data-tab="semua">Semua</button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-tab="terencana">Terencana</button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-tab="berlangsung">Berlangsung</button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-tab="selesai">Selesai</button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-tab="batal">Dibatalkan</button>
+      </div>
+
+      <div class="divider-v" aria-hidden="true"></div>
+
+      <div class="search-wrap">
+        <i class="ti ti-search" aria-hidden="true"></i>
+        <input type="text" id="search" placeholder="Cari lokasi, feeder, pelaksana..." aria-label="Cari jadwal">
+      </div>
+
+      <select class="filter-select" id="filter-jenis" aria-label="Filter jenis pekerjaan">
+        <option value="">Semua Jenis</option>
+        <option value="Pemeliharaan">Pemeliharaan</option>
+        <option value="Gangguan">Gangguan</option>
+        <option value="Konstruksi">Konstruksi</option>
+      </select>
+
+      <select class="filter-select" id="filter-rayon" aria-label="Filter rayon">
+        <option value="">Semua Rayon</option>
+        <option value="Rayon Probolinggo Kota">Probolinggo Kota</option>
+        <option value="Rayon Kraksaan">Kraksaan</option>
+        <option value="Rayon Leces">Leces</option>
+        <option value="Rayon Paiton">Paiton</option>
+      </select>
+
+      <button class="btn-export" onclick="showToast('Mengekspor data ke Excel...')">
+        <i class="ti ti-file-spreadsheet" aria-hidden="true"></i> Export
+      </button>
+
+      <button class="btn-primary" onclick="openAddModal()">
+        <i class="ti ti-plus" aria-hidden="true"></i> Tambah Jadwal
+      </button>
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-card">
+      <table role="grid" aria-label="Tabel jadwal padam pekerjaan">
+        <thead>
+          <tr>
+            <th onclick="sortBy('id')">No. WO <i class="ti ti-arrows-sort" aria-hidden="true"></i></th>
+            <th onclick="sortBy('lokasi')">Lokasi / Feeder <i class="ti ti-arrows-sort" aria-hidden="true"></i></th>
+            <th onclick="sortBy('jenis')">Jenis <i class="ti ti-arrows-sort" aria-hidden="true"></i></th>
+            <th onclick="sortBy('tanggal')">Tanggal & Waktu <i class="ti ti-arrows-sort" aria-hidden="true"></i></th>
+            <th onclick="sortBy('rayon')">Rayon <i class="ti ti-arrows-sort" aria-hidden="true"></i></th>
+            <th>Progress</th>
+            <th onclick="sortBy('status')">Status <i class="ti ti-arrows-sort" aria-hidden="true"></i></th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+      </table>
+      <div class="empty-state" id="empty-state">
+        <div class="empty-icon"><i class="ti ti-mood-empty" aria-hidden="true"></i></div>
+        <p>Tidak ada data ditemukan</p>
+        <small>Coba ubah filter atau kata kunci pencarian</small>
+      </div>
+      <div class="table-footer">
+        <span id="page-info">—</span>
+        <div class="pagination" id="pagination" role="navigation" aria-label="Halaman"></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- MODAL DETAIL -->
+<div class="modal-overlay" id="modal-detail" role="dialog" aria-modal="true" aria-labelledby="modal-detail-title">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-header-left">
+        <div class="modal-icon"><i class="ti ti-file-description" aria-hidden="true"></i></div>
+        <div>
+          <div class="modal-title" id="modal-detail-title">Detail Jadwal Padam</div>
+          <div class="modal-subtitle" id="modal-detail-wo">—</div>
+        </div>
+      </div>
+      <button class="modal-close" onclick="closeModal('modal-detail')" aria-label="Tutup">
+        <i class="ti ti-x" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="modal-body" id="modal-detail-body"></div>
+  </div>
+</div>
+
+<!-- MODAL TAMBAH -->
+<div class="modal-overlay" id="modal-add" role="dialog" aria-modal="true" aria-labelledby="modal-add-title">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-header-left">
+        <div class="modal-icon" style="background:var(--success-bg);color:var(--success);"><i class="ti ti-calendar-plus" aria-hidden="true"></i></div>
+        <div>
+          <div class="modal-title" id="modal-add-title">Tambah Jadwal Padam</div>
+          <div class="modal-subtitle">Isi data pekerjaan dengan lengkap</div>
+        </div>
+      </div>
+      <button class="modal-close" onclick="closeModal('modal-add')" aria-label="Tutup">
+        <i class="ti ti-x" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group form-full">
+          <label class="form-label" for="f-lokasi">Lokasi / Nama Feeder</label>
+          <input class="form-input" id="f-lokasi" type="text" placeholder="Contoh: Feeder Bromo / Kelurahan Sukabumi">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-area">Area Terdampak</label>
+          <input class="form-input" id="f-area" type="text" placeholder="Desa / Kelurahan">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-rayon">Rayon</label>
+          <select class="form-select" id="f-rayon">
+            <option value="">Pilih Rayon</option>
+            <option>Rayon Probolinggo Kota</option>
+            <option>Rayon Kraksaan</option>
+            <option>Rayon Leces</option>
+            <option>Rayon Paiton</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-jenis">Jenis Pekerjaan</label>
+          <select class="form-select" id="f-jenis">
+            <option>Pemeliharaan</option>
+            <option>Konstruksi</option>
+            <option>Gangguan</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-tanggal">Tanggal</label>
+          <input class="form-input" id="f-tanggal" type="date">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-mulai">Jam Mulai</label>
+          <input class="form-input" id="f-mulai" type="time" value="08:00">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-selesai">Estimasi Selesai</label>
+          <input class="form-input" id="f-selesai" type="time" value="12:00">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-pelanggan">Est. Pelanggan Terdampak</label>
+          <input class="form-input" id="f-pelanggan" type="number" min="0" placeholder="0">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-pelaksana">Tim Pelaksana</label>
+          <input class="form-input" id="f-pelaksana" type="text" placeholder="Nama tim / regu">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="f-status">Status Awal</label>
+          <select class="form-select" id="f-status">
+            <option value="terencana">Terencana</option>
+            <option value="berlangsung">Berlangsung</option>
+          </select>
+        </div>
+        <div class="form-group form-full">
+          <label class="form-label" for="f-uraian">Uraian Pekerjaan</label>
+          <textarea class="form-textarea" id="f-uraian" rows="3" placeholder="Deskripsi singkat pekerjaan yang akan dilakukan..."></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('modal-add')">Batal</button>
+      <button class="btn-primary" onclick="saveJadwal()">
+        <i class="ti ti-device-floppy" aria-hidden="true"></i> Simpan Jadwal
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <i class="ti ti-check" aria-hidden="true"></i>
+  <span id="toast-msg"></span>
+</div>
+
+<script>
+const DATA = [
+  { id:"WO-2605-001", lokasi:"Feeder Bromo", area:"Kel. Sukabumi, Kel. Mayangan", rayon:"Rayon Probolinggo Kota", jenis:"Pemeliharaan", tanggal:"12/05/2026", jam:"08.00 – 12.00", status:"berlangsung", pelaksana:"Tim Jaringan 1", uraian:"Penggantian trafo distribusi 160 KVA + pembersihan isolator", pelanggan:142, progress:65 },
+  { id:"WO-2605-002", lokasi:"Feeder Semeru", area:"Kel. Jrebeng, Kel. Triwung", rayon:"Rayon Probolinggo Kota", jenis:"Konstruksi", tanggal:"12/05/2026", jam:"07.00 – 15.00", status:"berlangsung", pelaksana:"Tim Konstruksi A", uraian:"Pemasangan JTM baru 20 kV SUTM 150mm² 500m", pelanggan:0, progress:40 },
+  { id:"WO-2605-003", lokasi:"Feeder Argopuro", area:"Ds. Patokan, Ds. Tiris", rayon:"Rayon Leces", jenis:"Pemeliharaan", tanggal:"12/05/2026", jam:"09.00 – 13.00", status:"berlangsung", pelaksana:"Tim Jaringan 3", uraian:"Penggantian FCO dan lightning arrester", pelanggan:89, progress:20 },
+  { id:"WO-2605-004", lokasi:"Feeder Tengger", area:"Kec. Sukapura, Desa Ngadisari", rayon:"Rayon Leces", jenis:"Pemeliharaan", tanggal:"13/05/2026", jam:"08.00 – 14.00", status:"terencana", pelaksana:"Tim Jaringan 2", uraian:"Pengukuran impedansi trafo & penggantian fuse NH", pelanggan:210, progress:0 },
+  { id:"WO-2605-005", lokasi:"Feeder Paiton", area:"Ds. Sukodadi, Ds. Jabungsisir", rayon:"Rayon Paiton", jenis:"Konstruksi", tanggal:"13/05/2026", jam:"07.30 – 16.00", status:"terencana", pelaksana:"Tim Konstruksi B", uraian:"Pembangunan gardu baru tipe beton 200 kVA", pelanggan:0, progress:0 },
+  { id:"WO-2605-006", lokasi:"Feeder Kraksaan", area:"Kec. Kraksaan, Ds. Rondokuning", rayon:"Rayon Kraksaan", jenis:"Gangguan", tanggal:"11/05/2026", jam:"13.45 – 17.20", status:"selesai", pelaksana:"Tim UG Kraksaan", uraian:"Perbaikan kabel SUTM putus akibat pohon tumbang", pelanggan:334, progress:100 },
+  { id:"WO-2605-007", lokasi:"Feeder Tongas", area:"Kel. Tongas, Kel. Curahdringu", rayon:"Rayon Probolinggo Kota", jenis:"Pemeliharaan", tanggal:"10/05/2026", jam:"08.00 – 11.30", status:"selesai", pelaksana:"Tim Jaringan 1", uraian:"Trimming pohon di jalur SUTM + pengetatan baut", pelanggan:76, progress:100 },
+  { id:"WO-2605-008", lokasi:"Feeder Lumajang", area:"Ds. Gending, Ds. Banyuanyar", rayon:"Rayon Leces", jenis:"Pemeliharaan", tanggal:"10/05/2026", jam:"09.00 – 14.00", status:"selesai", pelaksana:"Tim Jaringan 2", uraian:"Penggantian trafo 100 kVA + normalisasi beban", pelanggan:118, progress:100 },
+  { id:"WO-2605-009", lokasi:"Feeder Dringu", area:"Kec. Dringu, Kel. Pohsangit", rayon:"Rayon Probolinggo Kota", jenis:"Gangguan", tanggal:"09/05/2026", jam:"02.15 – 06.40", status:"selesai", pelaksana:"Tim UG Probolinggo", uraian:"Perbaikan SUTM 20 kV putus + ganti FCO meledak", pelanggan:280, progress:100 },
+  { id:"WO-2605-010", lokasi:"Feeder Paiton 2", area:"Ds. Kertosari, Ds. Jabungcandi", rayon:"Rayon Paiton", jenis:"Konstruksi", tanggal:"09/05/2026", jam:"07.00 – 15.30", status:"selesai", pelaksana:"Tim Konstruksi A", uraian:"Pemasangan trafo sisipan 160 kVA overload", pelanggan:0, progress:100 },
+  { id:"WO-2605-011", lokasi:"Feeder Condong", area:"Kec. Condong, Ds. Condong", rayon:"Rayon Kraksaan", jenis:"Pemeliharaan", tanggal:"08/05/2026", jam:"08.00 – 12.00", status:"selesai", pelaksana:"Tim Jaringan 4", uraian:"Pembersihan cut out & penggantian isolator retak", pelanggan:95, progress:100 },
+  { id:"WO-2605-012", lokasi:"Feeder Maron", area:"Kec. Maron, Ds. Sumberrejo", rayon:"Rayon Kraksaan", jenis:"Pemeliharaan", tanggal:"08/05/2026", jam:"09.00 – 13.30", status:"selesai", pelaksana:"Tim Jaringan 3", uraian:"Penggantian kawat AAAC putus 300m", pelanggan:160, progress:100 },
+  { id:"WO-2605-013", lokasi:"Feeder Besuk", area:"Kec. Besuk, Ds. Randu Jalak", rayon:"Rayon Kraksaan", jenis:"Gangguan", tanggal:"07/05/2026", jam:"11.00 – 14.45", status:"selesai", pelaksana:"Tim UG Kraksaan", uraian:"Normalisasi jaringan pasca banjir + ganti kWh meter rusak", pelanggan:408, progress:100 },
+  { id:"WO-2605-014", lokasi:"Feeder Wonomerto", area:"Kec. Wonomerto, Ds. Patalan", rayon:"Rayon Leces", jenis:"Pemeliharaan", tanggal:"07/05/2026", jam:"08.00 – 11.00", status:"selesai", pelaksana:"Tim Jaringan 2", uraian:"Pengukuran tegangan ujung & balancing beban 3 phasa", pelanggan:55, progress:100 },
+  { id:"WO-2605-015", lokasi:"Feeder Paiton 3", area:"Ds. Sumberanyar, Ds. Plampang", rayon:"Rayon Paiton", jenis:"Konstruksi", tanggal:"14/05/2026", jam:"07.00 – 17.00", status:"terencana", pelaksana:"Tim Konstruksi B", uraian:"Perluasan jaringan SUTM ke kawasan industri baru", pelanggan:0, progress:0 },
+  { id:"WO-2605-016", lokasi:"Feeder Bantaran", area:"Kec. Bantaran, Ds. Kedungsari", rayon:"Rayon Leces", jenis:"Pemeliharaan", tanggal:"15/05/2026", jam:"08.00 – 12.00", status:"terencana", pelaksana:"Tim Jaringan 1", uraian:"Penggantian trafo 250 kVA overload + pasang kapasitor bank", pelanggan:198, progress:0 },
+  { id:"WO-2605-017", lokasi:"Feeder Tiris", area:"Kec. Tiris, Ds. Andungbiru", rayon:"Rayon Leces", jenis:"Pemeliharaan", tanggal:"06/05/2026", jam:"08.00 – 13.00", status:"selesai", pelaksana:"Tim Jaringan 3", uraian:"Penggantian pole rusak 2 titik + tarik kawat SUTM", pelanggan:73, progress:100 },
+  { id:"WO-2605-018", lokasi:"Feeder Tegalsiwalan", area:"Kec. Tegalsiwalan, Ds. Ketompen", rayon:"Rayon Leces", jenis:"Gangguan", tanggal:"06/05/2026", jam:"03.00 – 07.30", status:"selesai", pelaksana:"Tim UG Probolinggo", uraian:"Pemulihan padam akibat sambaran petir pada Trafo 315 kVA", pelanggan:223, progress:100 },
+  { id:"WO-2605-019", lokasi:"Feeder Gending", area:"Kec. Gending, Ds. Sebaung", rayon:"Rayon Probolinggo Kota", jenis:"Pemeliharaan", tanggal:"16/05/2026", jam:"08.00 – 11.30", status:"terencana", pelaksana:"Tim Jaringan 4", uraian:"Pemeliharaan berkala rutin trafo distribusi", pelanggan:105, progress:0 },
+  { id:"WO-2605-020", lokasi:"Feeder Curahtulis", area:"Kec. Tongas, Ds. Curahtulis", rayon:"Rayon Probolinggo Kota", jenis:"Pemeliharaan", tanggal:"05/05/2026", jam:"08.00 – 12.00", status:"batal", pelaksana:"Tim Jaringan 2", uraian:"Dibatalkan: material trafo belum datang dari gudang", pelanggan:88, progress:0 },
+  { id:"WO-2605-021", lokasi:"Feeder Krejengan", area:"Kec. Krejengan, Ds. Sentong", rayon:"Rayon Kraksaan", jenis:"Konstruksi", tanggal:"04/05/2026", jam:"07.00 – 16.00", status:"batal", pelaksana:"Tim Konstruksi A", uraian:"Dibatalkan: izin dari Pemda belum terbit", pelanggan:0, progress:0 },
+  { id:"WO-2605-022", lokasi:"Feeder Banyuanyar", area:"Kec. Banyuanyar, Ds. Liprak", rayon:"Rayon Kraksaan", jenis:"Pemeliharaan", tanggal:"05/05/2026", jam:"09.00 – 13.00", status:"selesai", pelaksana:"Tim Jaringan 4", uraian:"Penggantian NH fuse & normalisasi OCR", pelanggan:147, progress:100 },
+  { id:"WO-2605-023", lokasi:"Feeder Pajarakan", area:"Kec. Pajarakan, Ds. Karanggeger", rayon:"Rayon Kraksaan", jenis:"Gangguan", tanggal:"04/05/2026", jam:"14.20 – 18.05", status:"selesai", pelaksana:"Tim UG Kraksaan", uraian:"Perbaikan gangguan hubung singkat fase-fase", pelanggan:261, progress:100 },
+  { id:"WO-2605-024", lokasi:"Feeder Wonoasih", area:"Kel. Wonoasih, Kel. Kedopok", rayon:"Rayon Probolinggo Kota", jenis:"Pemeliharaan", tanggal:"03/05/2026", jam:"08.00 – 12.00", status:"selesai", pelaksana:"Tim Jaringan 1", uraian:"Penggantian kabel SUTM bawah tanah bocor 200m", pelanggan:192, progress:100 },
+];
+
+let currentTab = "semua";
+let currentPage = 1;
+const PER_PAGE = 10;
+let sortKey = "tanggal";
+let sortDir = -1;
+let localData = [...DATA];
+
+function statusBadge(s) {
+  const map = {
+    terencana: ['badge-plan','ti-clock','Terencana'],
+    berlangsung: ['badge-prog','ti-loader-2','Berlangsung'],
+    selesai: ['badge-done','ti-circle-check','Selesai'],
+    batal: ['badge-batal','ti-circle-x','Dibatalkan'],
+  };
+  const [cls, icon, label] = map[s] || ['','',''];
+  return `<span class="badge ${cls}"><i class="ti ${icon}" aria-hidden="true"></i>${label}</span>`;
+}
+
+function jenisBadge(j) {
+  const map = {
+    Pemeliharaan: 'badge-pemeliharaan',
+    Gangguan: 'badge-gangguan',
+    Konstruksi: 'badge-konstruksi',
+  };
+  return `<span class="badge ${map[j]||''}">${j}</span>`;
+}
+
+function getFiltered() {
+  const q = document.getElementById("search").value.toLowerCase();
+  const jenis = document.getElementById("filter-jenis").value;
+  const rayon = document.getElementById("filter-rayon").value;
+  return localData.filter(d => {
+    const matchTab = currentTab==="semua" || d.status===currentTab;
+    const matchQ = !q || [d.lokasi,d.area,d.pelaksana,d.id,d.rayon].some(v=>v.toLowerCase().includes(q));
+    const matchJenis = !jenis || d.jenis===jenis;
+    const matchRayon = !rayon || d.rayon===rayon;
+    return matchTab && matchQ && matchJenis && matchRayon;
+  });
+}
+
+function sortBy(key) {
+  if(sortKey===key) sortDir*=-1;
+  else { sortKey=key; sortDir=1; }
+  render();
+}
+
+function render() {
+  let filtered = getFiltered();
+  filtered.sort((a,b)=>{
+    const va = a[sortKey]||"", vb = b[sortKey]||"";
+    return va < vb ? -sortDir : va > vb ? sortDir : 0;
+  });
+
+  const total = filtered.length;
+  const pages = Math.max(1, Math.ceil(total/PER_PAGE));
+  if(currentPage > pages) currentPage = 1;
+  const slice = filtered.slice((currentPage-1)*PER_PAGE, currentPage*PER_PAGE);
+
+  const tbody = document.getElementById("table-body");
+  const empty = document.getElementById("empty-state");
+
+  if(slice.length===0) {
+    tbody.innerHTML = "";
+    empty.style.display = "block";
+  } else {
+    empty.style.display = "none";
+    tbody.innerHTML = slice.map(d => `
+      <tr>
+        <td class="td-wo">${d.id}</td>
+        <td>
+          <div class="td-lokasi-name">${d.lokasi}</div>
+          <div class="td-lokasi-area">${d.area}</div>
+        </td>
+        <td>${jenisBadge(d.jenis)}</td>
+        <td>
+          <div class="td-time-date">${d.tanggal}</div>
+          <div class="td-time-jam">${d.jam}</div>
+        </td>
+        <td style="font-size:13px;color:var(--text-2);">${d.rayon.replace("Rayon ","")}</td>
+        <td class="progress-cell">
+          <div class="progress-bar-wrap"><div class="progress-fill" style="width:${d.progress}%"></div></div>
+          <div class="progress-pct">${d.progress}%</div>
+        </td>
+        <td>${statusBadge(d.status)}</td>
+        <td><button class="btn-detail" onclick="openDetail('${d.id}')"><i class="ti ti-eye" aria-hidden="true"></i>Detail</button></td>
+      </tr>
+    `).join("");
+  }
+
+  const start = total===0 ? 0 : (currentPage-1)*PER_PAGE+1;
+  const end = Math.min(currentPage*PER_PAGE, total);
+  document.getElementById("page-info").textContent = total===0
+    ? "Tidak ada data"
+    : `Menampilkan ${start}–${end} dari ${total} data`;
+
+  const pg = document.getElementById("pagination");
+  pg.innerHTML = "";
+
+  const addBtn = (label, page, disabled, active, isIcon) => {
+    const b = document.createElement("button");
+    b.className = "page-btn" + (active?" active":"");
+    b.disabled = disabled;
+    b.innerHTML = isIcon ? `<i class="ti ${label}" aria-hidden="true"></i>` : label;
+    b.setAttribute("aria-label", isIcon ? label : `Halaman ${page}`);
+    if(!disabled) b.onclick = () => { currentPage=page; render(); };
+    pg.appendChild(b);
+  };
+
+  addBtn("ti-chevron-left", currentPage-1, currentPage===1, false, true);
+  const maxBtn = 5;
+  let start2 = Math.max(1, currentPage-2);
+  let end2 = Math.min(pages, start2+maxBtn-1);
+  if(end2-start2 < maxBtn-1) start2 = Math.max(1, end2-maxBtn+1);
+  for(let i=start2;i<=end2;i++) addBtn(String(i), i, false, i===currentPage, false);
+  addBtn("ti-chevron-right", currentPage+1, currentPage===pages, false, true);
+}
+
+function openDetail(id) {
+  const d = localData.find(x=>x.id===id);
+  if(!d) return;
+  document.getElementById("modal-detail-wo").textContent = d.id;
+  document.getElementById("modal-detail-body").innerHTML = `
+    <div class="detail-section">
+      <div class="detail-section-title">Informasi Pekerjaan</div>
+      <div class="detail-grid">
+        <div><div class="detail-field-label">Status</div><div>${statusBadge(d.status)}</div></div>
+        <div><div class="detail-field-label">Jenis</div><div>${jenisBadge(d.jenis)}</div></div>
+        <div><div class="detail-field-label">Tanggal</div><div class="detail-field-val">${d.tanggal}</div></div>
+        <div><div class="detail-field-label">Jam Pelaksanaan</div><div class="detail-field-val mono">${d.jam}</div></div>
+      </div>
+    </div>
+    <div class="detail-section">
+      <div class="detail-section-title">Lokasi & Jaringan</div>
+      <div style="margin-bottom:10px;">
+        <div class="detail-field-label">Feeder / Lokasi</div>
+        <div class="detail-field-val">${d.lokasi}</div>
+      </div>
+      <div>
+        <div class="detail-field-label">Area Terdampak</div>
+        <div class="area-list">
+          ${d.area.split(", ").map(a=>`<div class="area-item"><i class="ti ti-map-pin" aria-hidden="true"></i>${a}</div>`).join("")}
+        </div>
+      </div>
+      <div style="margin-top:10px;">
+        <div class="detail-field-label">Rayon</div>
+        <div class="detail-field-val">${d.rayon}</div>
+      </div>
+    </div>
+    <div class="detail-section">
+      <div class="detail-section-title">Uraian & Pelaksanaan</div>
+      <div style="margin-bottom:10px;">
+        <div class="detail-field-label">Uraian Pekerjaan</div>
+        <div style="font-size:13.5px;color:var(--text);line-height:1.65;margin-top:3px;">${d.uraian}</div>
+      </div>
+      <div class="detail-grid">
+        <div><div class="detail-field-label">Tim Pelaksana</div><div class="detail-field-val">${d.pelaksana}</div></div>
+        <div><div class="detail-field-label">Pelanggan Terdampak</div><div class="detail-field-val">${d.pelanggan > 0 ? d.pelanggan.toLocaleString('id-ID') + ' pelanggan' : '—'}</div></div>
+      </div>
+    </div>
+    ${d.status==="berlangsung" ? `
+    <div class="detail-section">
+      <div class="detail-section-title">Progress Real-time</div>
+      <div class="progress-detail">
+        <div class="bar"><div class="fill" style="width:${d.progress}%"></div></div>
+        <div class="progress-pct-lg">${d.progress}% selesai</div>
+      </div>
+    </div>` : ""}
+  `;
+  document.getElementById("modal-detail").classList.add("open");
+}
+
+function openAddModal() {
+  document.getElementById("f-tanggal").value = "2026-05-12";
+  document.getElementById("modal-add").classList.add("open");
+}
+
+function saveJadwal() {
+  const lokasi = document.getElementById("f-lokasi").value.trim();
+  if(!lokasi) { alert("Lokasi / Feeder wajib diisi."); return; }
+  const n = localData.length + 1;
+  const newId = `WO-2605-${String(n).padStart(3,"0")}`;
+  const tgl = document.getElementById("f-tanggal").value;
+  const [y,m,d2] = tgl ? tgl.split("-") : ["2026","05","12"];
+  const tanggal = tgl ? `${d2}/${m}/${y}` : "12/05/2026";
+  const mulai = document.getElementById("f-mulai").value || "08:00";
+  const selesai = document.getElementById("f-selesai").value || "12:00";
+
+  localData.unshift({
+    id: newId,
+    lokasi,
+    area: document.getElementById("f-area").value || "—",
+    rayon: document.getElementById("f-rayon").value || "Rayon Probolinggo Kota",
+    jenis: document.getElementById("f-jenis").value || "Pemeliharaan",
+    tanggal, jam: `${mulai} – ${selesai}`,
+    status: document.getElementById("f-status").value || "terencana",
+    pelaksana: document.getElementById("f-pelaksana").value || "—",
+    uraian: document.getElementById("f-uraian").value || "—",
+    pelanggan: parseInt(document.getElementById("f-pelanggan").value)||0,
+    progress: 0
+  });
+
+  closeModal("modal-add");
+  currentTab = "semua"; currentPage = 1;
+  document.querySelectorAll(".tab-btn").forEach(b=>b.classList.toggle("active", b.dataset.tab==="semua"));
+  render();
+  showToast("Jadwal berhasil ditambahkan!");
+}
+
+function closeModal(id) { document.getElementById(id).classList.remove("open"); }
+
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  document.getElementById("toast-msg").textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove("show"), 3000);
+}
+
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    currentTab = btn.dataset.tab;
+    currentPage = 1;
+    render();
+  });
+});
+
+document.getElementById("search").addEventListener("input", ()=>{ currentPage=1; render(); });
+document.getElementById("filter-jenis").addEventListener("change", ()=>{ currentPage=1; render(); });
+document.getElementById("filter-rayon").addEventListener("change", ()=>{ currentPage=1; render(); });
+
+document.querySelectorAll(".modal-overlay").forEach(m => {
+  m.addEventListener("click", e => { if(e.target===m) m.classList.remove("open"); });
+});
+
+document.addEventListener("keydown", e => {
+  if(e.key==="Escape") document.querySelectorAll(".modal-overlay.open").forEach(m=>m.classList.remove("open"));
+});
+
+function updateClock() {
+  document.getElementById("clock").textContent = new Date().toLocaleTimeString("id-ID",{hour12:false});
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+render();
+</script>
+</body>
+</html>
